@@ -1,4 +1,5 @@
 from yabt.utils import command_factory
+import yabt.models
 import os, sys
 
 class CommandOption(object):
@@ -38,9 +39,20 @@ class Add(CommandOption):
     cmd = "add"
     help = """usage: yabt add <title>
 
-Options:
-    Some options should go here
+    <title> A single parameter that describes your new task.  This
+            is generally encapsulated in quotes to accept a string.
 """
+
+    def run(self):
+        if len(self.caller.options.args) <= 1:
+            print get_help('add')
+            sys.exit(1)
+        else:
+            subject = self.caller.options.args[1]
+            task = yabt.models.Task()
+            task.subject = subject
+            task.creator = "Travis Swicegood <travis@domain51.com>"
+            task.save()
 
 
 class Help(CommandOption):
