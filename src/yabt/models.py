@@ -33,6 +33,11 @@ class Task(object):
 
     body = property(get_body, set_body)
 
+    def get_id(self):
+        return self.data["YABT-ID"]
+
+    id = property(get_id)
+
     def __str__(self):
         r = ""
         for key in self.data:
