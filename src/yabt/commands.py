@@ -6,7 +6,7 @@ class CommandOption(object):
     help = "not yet defined"
 
     def __init__(self, caller):
-        pass
+        self.caller = caller
 
     def run(self):
         print "Not yet implemented"
@@ -42,16 +42,11 @@ Options:
     Some options should go here
 """
 
-    def __init__(self, caller):
-        pass
 
 class Help(CommandOption):
     desc = "Display help for the provide command"
     cmd = "help"
     help = """Isn't that a bit meta?  Seriously, do you think this is Ruby?"""
-
-    def __init__(self, caller):
-        self.caller = caller
 
     def run(self):
         if len(self.caller.options.args) <= 1:
