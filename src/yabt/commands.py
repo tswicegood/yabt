@@ -1,4 +1,5 @@
 from yabt.utils import command_factory
+import os, sys
 
 class CommandOption(object):
     desc = "undefined"
@@ -9,6 +10,28 @@ class CommandOption(object):
 
     def run(self):
         print "Not yet implemented"
+
+class Init(CommandOption):
+    desc = "Initialize a new YABT filesystem"
+    cmd = "init"
+    help = """usage: yabt init
+
+This initializes a YABT filesystem inside the .yabt directory if one does
+not exist.
+"""
+
+    def run(self):
+        """
+        @todo add ability to pass in --dir parameter
+        """
+        new_path = os.path.join(os.getcwd(), ".yabt")
+        if os.path.exists(new_path):
+            print "YABT filesystem already initialized in " + new_path
+            sys.exit(1)
+        else:
+            os.mkdir(new_path)
+            print "YABT filesystem initialized in " + new_path
+            sys.exit(0)
 
 class Add(CommandOption):
     desc = "Add a new issue"
