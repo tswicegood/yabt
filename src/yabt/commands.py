@@ -52,9 +52,11 @@ class Help(CommandOption):
         if len(self.caller.options.args) <= 1:
             self.caller.usage()
         else :
-            klass = command_factory(self.caller.options.args[1].title())
-            print klass.help
-        
+            print get_help(self.caller.options.args[1])
+
+def get_help(class_name):
+    c = command_factory(class_name.title())
+    return c.help
 
 class List(CommandOption):
     cmd = "list"
