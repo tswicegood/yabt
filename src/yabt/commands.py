@@ -32,6 +32,7 @@ not exist.
         else:
             os.mkdir(new_path)
             print "YABT filesystem initialized in " + new_path
+            yabt.models.Index(os.path.join(new_path, "index"))
             sys.exit(0)
 
 class Add(CommandOption):
@@ -53,6 +54,10 @@ class Add(CommandOption):
             task.subject = subject
             task.creator = "Travis Swicegood <travis@domain51.com>"
             task.save()
+            # refactor generation of index and path
+            index = yabt.models.Index(os.path.join(os.getcwd(),  ".yabt", "index"))
+            index.addTask(task)
+            index.save()
 
 
 class Help(CommandOption):
@@ -66,6 +71,24 @@ class Help(CommandOption):
         else :
             print get_help(self.caller.options.args[1])
 
+class View(CommandOption):
+    desc = "View a given bug by its subject"
+    cmd = "view"
+    help = """usage: yabt view <title>
+
+    <title> A single parameter that identifies a task by its unique subject.
+            It is generally encapsulated in quotes.
+"""
+
+    def run(self):
+        print "Not yet implemented"
+        """
+        i = yabt.models.IndexFactory()
+        task_id = i.get(selc.caller.options.args[1])
+        t = yabt.models.TaskFactory().byId(task_id)
+        print t
+        """
+
 def get_help(class_name):
     c = command_factory(class_name.title())
     return c.help
@@ -74,3 +97,7 @@ class List(CommandOption):
     cmd = "list"
     desc = "Display a list of current issues"
 
+    def run(self):
+        index = yabt.models.Index(os.path.join(os.getcwd(), ".yabt", "index"))
+        for task in index:
+            print index.get(task) + "    " + task
