@@ -81,13 +81,13 @@ class View(CommandOption):
 """
 
     def run(self):
-        print "Not yet implemented"
-        """
-        i = yabt.models.IndexFactory()
-        task_id = i.get(selc.caller.options.args[1])
-        t = yabt.models.TaskFactory().byId(task_id)
-        print t
-        """
+        if len(self.caller.options.args) <= 1:
+            # TODO: should raise an error and let the caller display the error and usage
+            print "Error: must supply a title"
+            print get_help("View");
+            return
+        task = yabt.models.TaskFactory().byTitle(self.caller.options.args[1])
+        print task;
 
 def get_help(class_name):
     c = command_factory(class_name.title())

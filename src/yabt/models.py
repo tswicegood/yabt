@@ -41,9 +41,16 @@ class Index(object):
         return iter(self.data)
 
 class Task(object):
-    def __init__(self, subject = ""):
+    def __init__(self, subject = "", data = None):
         self.new()
         self.is_locked = False
+        if data is not None:
+            self.__initialize(data)
+
+    def __initialize(self, data):
+        for key, value in data.iteritems():
+            self.__setattr__(key, value)
+
 
     def new(self):
         self.data = {}
@@ -85,6 +92,16 @@ class Task(object):
 
     id = property(get_id, set_id)
 
+    def get_created_on(self):
+        return self.data['Created-On']
+
+    def set_created_on(self, data):
+        if self.is_locked == True:
+            raise Error, "Can't change the Created-On date after being locked"
+        self.data['Created-On'] = data;
+
+    created_on = property(get_created_on, set_created_on)
+
     def __str__(self):
         r = ""
         for key in self.data:
@@ -114,23 +131,32 @@ class Task(object):
         return sha.hexdigest()
 
 class TaskFactory(object):
+    def byTitle(self, subject):
+        index = Index(os.path.join(os.getcwd(), ".yabt", "index"))
+        if index.has(subject):
+            task_id = index.get(subject)
+            return self.byId(task_id)
+
+
     def byId(self, task_id):
         path = os.path.join(os.getcwd(), '.yabt')
         f = open(os.path.join(path, 'tickets', task_id), 'r')
         to_body_yet = False
-        task = Task()
+        # TODO: refactor this into its own reader
+        data = {}
         for line in f:
             if line.strip() == "":
                 to_body_yet = True
-                body = ""
+                data["body"] = ""
                 continue
             if to_body_yet == True:
-                task.body += line
+                data["body"] += line
             else:
                 break_point = line.index(":")
-                name = line[0:break_point].lower().strip()
-                if name[0:5] == "yabt-" :
+                name = line[0:break_point].lower().strip().replace("-", "_")
+                if name[0:5] == "yabt_" :
                     name = name[5:]
-                task.__setattr__(name, line[break_point + 1:].strip())
+                data[name] = line[break_point + 1:].strip()
+        task = Task(data = data)
         return task
 
