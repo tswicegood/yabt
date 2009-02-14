@@ -1,10 +1,14 @@
 (dp0
-S'Start self hosting yabt'
+S'Create `yabt edit` command'
 p1
-S'0b18be24ed2c77a5eec85007f612bcf50408ed94'
+S'e5f55e4ce9078fc1d7644eee6ca98940ea0615e2'
 p2
-sS'katy bar the door'
+sS'Start self hosting yabt'
 p3
-S'93a311cde8c10832934494d50ae3a4abf3ae124f'
+S'0b18be24ed2c77a5eec85007f612bcf50408ed94'
 p4
+sS'katy bar the door'
+p5
+S'93a311cde8c10832934494d50ae3a4abf3ae124f'
+p6
 s.
