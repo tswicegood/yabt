@@ -1,5 +1,5 @@
 import yabt.commands
 
 def command_factory(name):
-    exec('k = yabt.commands.%s' % name)
-    return k
+    exec('from yabt.commands.%s import Command' % name)
+    return Command

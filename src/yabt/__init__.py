@@ -15,7 +15,7 @@ class YABT(object) :
 
     def run(self):
         if len(self.options.args) > 0  :
-            klass = command_factory(self.options.args[0].title())
+            klass = command_factory(self.options.args[0])
             klass(self).run()
         else:
             self.usage()
