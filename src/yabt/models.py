@@ -102,6 +102,17 @@ class Task(object):
 
     created_on = property(get_created_on, set_created_on)
 
+    def get_status(self):
+        if self.data.has_key('YABT-Status') :
+            return self.data['YABT-Status']
+        else:
+            return "N/A"
+
+    def set_status(self, status):
+        self.data['YABT-Status'] = status
+
+    status = property(get_status, set_status)
+
     def __str__(self):
         r = ""
         for key in self.data:
