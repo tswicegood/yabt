@@ -1,5 +1,6 @@
 import optparse
 import yabt.commands
+import yabt.utils
 from yabt.utils import command_factory
 
 class Options(object) :
@@ -37,9 +38,9 @@ You can get additional information by typing: yabt help <command>"""\
 
     def display_commands(self):
         ret = []
-        for class_name in dir(yabt.commands):
+        for command in yabt.utils.find_commands():
             try:
-                klass = command_factory(class_name)
+                klass = command_factory(command)
                 ret.append("%10s - %s" % (klass.cmd, klass.desc))
             except AttributeError, e:
                 pass
