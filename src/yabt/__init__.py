@@ -6,15 +6,18 @@ from yabt.utils import command_factory
 class Options(object) :
     def __init__(self):
         self.parser = optparse.OptionParser()
-        self.parser.add_option('-v', '--version')
+        self.parser.add_option('-v', '--version', action="store_true", dest="version")
         self.options, self.args = self.parser.parse_args()
 
 class YABT(object) :
-    version = 0.1
+    version = "0.1.0"
     def __init__(self, options):
         self.options = options
 
     def run(self):
+        if self.options.options.version:
+            print self.version_line()
+            return
         if len(self.options.args) > 0  :
             klass = command_factory(self.options.args[0])
             klass(self).run()
@@ -34,7 +37,7 @@ You can get additional information by typing: yabt help <command>"""\
 
 
     def version_line(self):
-        return "Yet-Another-Bug-Tracker v%s" % self.version
+        return "Yet Another Bug Tracker (yabt) v%s" % self.version
 
     def display_commands(self):
         ret = []
