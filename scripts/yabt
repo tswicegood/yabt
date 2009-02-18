@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 
-# simple hack to make this work
-import sys
-sys.path.append('./src')
-
 from yabt import Options, YABT
 
 if __name__ == "__main__" :
