@@ -43,10 +43,12 @@ class Index(object):
 
 class Task(object):
     def __init__(self, subject = "", data = None):
-        self.new()
         self.is_locked = False
+        self.data = {}
         if data is not None:
             self.__initialize(data)
+        else:
+            self.new()
 
     def __initialize(self, data):
         for key, value in data.iteritems():
@@ -54,7 +56,6 @@ class Task(object):
 
 
     def new(self):
-        self.data = {}
         self.data["Created-On"] = datetime.datetime.now()
         self.data["Body"] = ""
 
