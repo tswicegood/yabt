@@ -17,7 +17,7 @@ class Command(CommandOption):
             print "Error: must supply a title"
             print get_help("view");
             return
-        task = yabt.models.TaskFactory().byTitle(self.caller.options.args[1])
+        task = yabt.models.TaskFactory().find(self.caller.options.args[1])
         print task;
 
 

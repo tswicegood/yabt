@@ -19,7 +19,7 @@ class Command(CommandOption):
             print "Error: must supply a title"
             print get_help("status")
             return
-        task = yabt.models.TaskFactory().byTitle(self.caller.options.args[1])
+        task = yabt.models.TaskFactory().find(self.caller.options.args[1])
         if len(self.caller.options.args) == 3:
             task.status = self.caller.options.args[2]
             task.save()
