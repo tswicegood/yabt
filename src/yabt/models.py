@@ -1,6 +1,7 @@
 import datetime, hashlib
 import pickle
 import os
+import glob
 
 class Index(object):
     def __init__(self, file_name):
@@ -142,15 +143,29 @@ class Task(object):
         return sha.hexdigest()
 
 class TaskFactory(object):
+    def find(self, criteria):
+        strategies = [
+            self.byId,
+            self.byTitle,
+            self.byPartialId
+        ]
+        for strategy in strategies:
+            task = strategy(criteria)
+            if task is not None:
+                return task
+        return None
+
     def byTitle(self, subject):
         index = Index(os.path.join(os.getcwd(), ".yabt", "index"))
         if index.has(subject):
             task_id = index.get(subject)
             return self.byId(task_id)
 
-
     def byId(self, task_id):
         path = os.path.join(os.getcwd(), '.yabt')
+        ticket_name = os.path.join(path, 'tickets', task_id);
+        if os.path.exists(ticket_name) != True:
+            return None;
         f = open(os.path.join(path, 'tickets', task_id), 'r')
         to_body_yet = False
         # TODO: refactor this into its own reader
@@ -171,3 +186,18 @@ class TaskFactory(object):
         task = Task(data = data)
         return task
 
+    def byPartialId(self, partial_id):
+        tickets = glob.glob(self.__ticketFile(partial_id) + "*")
+        num_of_tickets = len(tickets)
+        if num_of_tickets == 1:
+            return self.byId(os.path.basename(tickets[0]))
+        elif num_of_tickets == 0:
+            return None
+        else:
+            return tickets
+
+    def __ticketDirectory(self):
+        return os.path.join(os.getcwd(), '.yabt', 'tickets');
+
+    def __ticketFile(self, id):
+        return os.path.join(self.__ticketDirectory(), id)

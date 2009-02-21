@@ -21,7 +21,7 @@ editor to launch:
             print "Error: must supply a title"
             print get_help("edit")
             return
-        task = yabt.models.TaskFactory().byTitle(self.caller.options.args[1])
+        task = yabt.models.TaskFactory().find(self.caller.options.args[1])
         if os.getenv("EDITOR") is not None:
             editor = os.getenv("EDITOR")
         else:
