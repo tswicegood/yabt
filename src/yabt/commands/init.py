@@ -23,6 +23,7 @@ not exist.
             os.mkdir(new_path)
             print "YABT filesystem initialized in " + new_path
             yabt.models.Index(os.path.join(new_path, "index"))
+            os.mkdir(os.path.join(new_path, "tickets"))
             sys.exit(0)
 
 
