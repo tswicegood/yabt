@@ -162,11 +162,29 @@ class TaskFactory(object):
             return self.byId(task_id)
 
     def byId(self, task_id):
-        path = os.path.join(os.getcwd(), '.yabt')
-        ticket_name = os.path.join(path, 'tickets', task_id);
-        if os.path.exists(ticket_name) != True:
+        task_file = self.__ticketFile(task_id)
+        if os.path.exists(task_file) != True:
             return None;
-        f = open(os.path.join(path, 'tickets', task_id), 'r')
+        return self.__loadTaskByFullName(task_file)
+
+    def byPartialId(self, partial_id):
+        tickets = glob.glob(self.__ticketFile(partial_id) + "*")
+        num_of_tickets = len(tickets)
+        if num_of_tickets == 1:
+            return self.__loadTaskByFullName(tickets[0])
+        elif num_of_tickets == 0:
+            return None
+        else:
+            return tickets
+
+    def __ticketDirectory(self):
+        return os.path.join(os.getcwd(), '.yabt', 'tickets');
+
+    def __ticketFile(self, id):
+        return os.path.join(self.__ticketDirectory(), id)
+
+    def __loadTaskByFullName(self, task_file):
+        f = open(task_file, 'r')
         to_body_yet = False
         # TODO: refactor this into its own reader
         data = {}
@@ -186,18 +204,4 @@ class TaskFactory(object):
         task = Task(data = data)
         return task
 
-    def byPartialId(self, partial_id):
-        tickets = glob.glob(self.__ticketFile(partial_id) + "*")
-        num_of_tickets = len(tickets)
-        if num_of_tickets == 1:
-            return self.byId(os.path.basename(tickets[0]))
-        elif num_of_tickets == 0:
-            return None
-        else:
-            return tickets
 
-    def __ticketDirectory(self):
-        return os.path.join(os.getcwd(), '.yabt', 'tickets');
-
-    def __ticketFile(self, id):
-        return os.path.join(self.__ticketDirectory(), id)
