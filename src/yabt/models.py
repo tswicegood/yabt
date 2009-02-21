@@ -30,6 +30,12 @@ class Index(object):
     def addTask(self, task):
         self.add(task.id, task.subject)
 
+    def remove(self, subject):
+        self.data.pop(subject)
+
+    def removeTask(self, task):
+        self.remove(task.subject)
+
     def get(self, subject):
         return self.data[subject]
 
@@ -45,6 +51,7 @@ class Task(object):
     def __init__(self, subject = "", data = None):
         self.is_locked = False
         self.data = {}
+        self.file = TaskFile(self)
         if data is not None:
             self.__initialize(data)
         else:
@@ -136,12 +143,26 @@ class Task(object):
         f.write(str(self));
         f.close()
 
+    def remove(self):
+        self.file.remove();
+
     def generateId(self):
         sha = hashlib.sha1()
         sha.update("Created-On: " + str(self.data["Created-On"]))
         sha.update("Creator: " + self.creator)
         sha.update("Subject: " + self.subject)
         return sha.hexdigest()
+
+class TaskFile(object):
+    def __init__(self, task):
+        self.task = task
+
+    def remove(self):
+        task_name = self.generateTaskName()
+        os.remove(task_name)
+
+    def generateTaskName(self):
+        return os.path.join(os.getcwd(), ".yabt", "tickets", self.task.id)
 
 class TaskFactory(object):
     def find(self, criteria):
