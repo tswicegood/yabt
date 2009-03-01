@@ -1,0 +1,9 @@
+YABT-ID: e5f55e4ce9078fc1d7644eee6ca98940ea0615e2
+Creator: Travis Swicegood <travis@domain51.com>
+Created-On: 2009-02-13 19:07:24.833283
+Subject: Create `yabt edit` command
+
+This was edited directly via `yabt edit 'Create `yabt edit` command'`.
+Because I use MacVim, I had to set the EDITOR env variable as I don't have
+a real "vi", which Python's submodule.popen() requires.
+
