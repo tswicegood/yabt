@@ -27,13 +27,13 @@ class Index(object):
     def add(self, id, subject):
         self.data[subject] = id
 
-    def addTask(self, task):
+    def add_task(self, task):
         self.add(task.id, task.subject)
 
     def remove(self, subject):
         self.data.pop(subject)
 
-    def removeTask(self, task):
+    def remove_task(self, task):
         self.remove(task.subject)
 
     def get(self, subject):
@@ -137,7 +137,7 @@ class Task(object):
         return r
 
     def save(self):
-        self.data["YABT-ID"] = self.generateId()
+        self.data["YABT-ID"] = self.generate_id()
         path = os.path.join(os.getcwd(), ".yabt")
         f = open(os.path.join(path, 'tickets', self.id), "w")
         f.write(str(self));
@@ -146,7 +146,7 @@ class Task(object):
     def remove(self):
         self.file.remove();
 
-    def generateId(self):
+    def generate_id(self):
         sha = hashlib.sha1()
         sha.update("Created-On: " + str(self.data["Created-On"]))
         sha.update("Creator: " + self.creator)
@@ -167,9 +167,9 @@ class TaskFile(object):
 class TaskFactory(object):
     def find(self, criteria):
         strategies = [
-            self.byId,
-            self.byTitle,
-            self.byPartialId
+            self.by_id,
+            self.by_title,
+            self.by_partial_id
         ]
         for strategy in strategies:
             task = strategy(criteria)
@@ -177,35 +177,35 @@ class TaskFactory(object):
                 return task
         return None
 
-    def byTitle(self, subject):
+    def by_title(self, subject):
         index = Index(os.path.join(os.getcwd(), ".yabt", "index"))
         if index.has(subject):
             task_id = index.get(subject)
-            return self.byId(task_id)
+            return self.by_id(task_id)
 
-    def byId(self, task_id):
-        task_file = self.__ticketFile(task_id)
+    def by_id(self, task_id):
+        task_file = self.__ticket_file(task_id)
         if os.path.exists(task_file) != True:
             return None;
-        return self.__loadTaskByFullName(task_file)
+        return self.__load_task_by_full_name(task_file)
 
-    def byPartialId(self, partial_id):
-        tickets = glob.glob(self.__ticketFile(partial_id) + "*")
+    def by_partial_id(self, partial_id):
+        tickets = glob.glob(self.__ticket_file(partial_id) + "*")
         num_of_tickets = len(tickets)
         if num_of_tickets == 1:
-            return self.__loadTaskByFullName(tickets[0])
+            return self.__load_task_by_full_name(tickets[0])
         elif num_of_tickets == 0:
             return None
         else:
             return tickets
 
-    def __ticketDirectory(self):
+    def __ticket_directory(self):
         return os.path.join(os.getcwd(), '.yabt', 'tickets');
 
-    def __ticketFile(self, id):
-        return os.path.join(self.__ticketDirectory(), id)
+    def __ticket_file(self, id):
+        return os.path.join(self.__ticket_directory(), id)
 
-    def __loadTaskByFullName(self, task_file):
+    def __load_task_by_full_name(self, task_file):
         f = open(task_file, 'r')
         to_body_yet = False
         # TODO: refactor this into its own reader

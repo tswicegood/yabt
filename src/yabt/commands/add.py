@@ -24,7 +24,7 @@ class Command(CommandOption):
             task.save()
             # refactor generation of index and path
             index = yabt.models.Index(os.path.join(os.getcwd(),  ".yabt", "index"))
-            index.addTask(task)
+            index.add_task(task)
             index.save()
 
 

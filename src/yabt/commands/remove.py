@@ -23,7 +23,7 @@ class Command(CommandOption):
             task.remove()
             # refactor generation of index and path
             index = yabt.models.Index(os.path.join(os.getcwd(),  ".yabt", "index"))
-            index.removeTask(task)
+            index.remove_task(task)
             index.save()
         except IndexError:
             print "Error: must provide a task to remove"
