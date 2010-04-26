@@ -1,1 +1,4 @@
 build/*
+MANIFEST
+dist/*
+*.py[co]

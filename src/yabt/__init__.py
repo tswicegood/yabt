@@ -10,7 +10,7 @@ class Options(object) :
         self.options, self.args = self.parser.parse_args()
 
 class YABT(object) :
-    version = "0.1.0"
+    version = "0.1.1"
     def __init__(self, options):
         self.options = options
 
