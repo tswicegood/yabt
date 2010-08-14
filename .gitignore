@@ -2,3 +2,6 @@ build/*
 MANIFEST
 dist/*
 *.py[co]
+bin/*
+include/*
+lib/*
